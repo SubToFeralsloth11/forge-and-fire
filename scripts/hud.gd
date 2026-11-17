@@ -24,6 +24,7 @@ var _marker_col := Color.WHITE
 var _lrf := -1.0
 var _wind_l: Label
 var _last_pellet := 0
+var hit_panel: PanelContainer
 
 
 func _ready() -> void:
@@ -47,6 +48,8 @@ func _ready() -> void:
 	info_l = UI.label("", 14, UI.MUTED)
 	bv.add_child(info_l)
 	var hl := UI.panel(Color(0.05, 0.06, 0.08, 0.6))
+	hl.visible = false
+	hit_panel = hl
 	hl.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	hl.offset_left = -520
 	hl.offset_right = -16
@@ -152,6 +155,7 @@ func on_hit(h: Dictionary) -> void:
 	if _hits.size() > 7:
 		_hits.pop_back()
 	hit_l.text = "\n".join(_hits)
+	hit_panel.visible = true
 	if h.mat in ["steel", "dummy", "paper", "glass", "melon", "armor", "gel", "wood", "concrete", "tire", "explosion"]:
 		_marker = 1.0
 		_marker_col = Color(1, 0.3, 0.2) if h.mat == "dummy" else Color(1, 1, 1)

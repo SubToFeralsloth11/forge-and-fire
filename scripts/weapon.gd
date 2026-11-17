@@ -471,7 +471,13 @@ func _process(delta: float) -> void:
 	var kind: String = info.optic_kind
 	var eye := 0.16
 	match kind:
-		"irons": eye = 0.12 if not pistol else 0.42
+		"irons":
+			eye = 0.12
+			if pistol:
+				eye = 0.42
+			elif rcv.fam in ["ak", "lever", "pump", "double"]:
+				# Rear sight sits forward on the receiver/barrel: the eye is far behind it.
+				eye = 0.3
 		"dot": eye = 0.2 if not pistol else 0.42
 		"holo": eye = 0.15
 		"scope": eye = 0.12
