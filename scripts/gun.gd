@@ -202,7 +202,7 @@ static func assemble(b: Dictionary) -> Node3D:
 	var info := {
 		"anchors": anchors, "groups": groups, "slots": slot_nodes, "rinfo": rinfo, "parts": part_info,
 		"muzzle": muzzle, "zoom": odef.get("zoom", [1.0]), "optic_kind": odef.get("kind", "irons" if native else ""),
-		"optic_id": opt.get("id", ""),
+		"optic_id": opt.get("id", ""), "socks": socks,
 	}
 	gun.set_meta("info", info)
 	return gun
