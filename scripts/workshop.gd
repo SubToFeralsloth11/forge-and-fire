@@ -23,6 +23,7 @@ const STAT_ROWS := [
 var build := {}
 var gun: Node3D
 var cam: Camera3D
+var we: WorldEnvironment
 var sel_slot := "barrel"
 var _undo: Array = []
 var _redo: Array = []
@@ -76,7 +77,7 @@ func _setup_scene() -> void:
 	env.ssao_enabled = true
 	env.glow_enabled = true
 	env.glow_intensity = 0.4
-	var we := WorldEnvironment.new()
+	we = WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	var sky := Sky.new()

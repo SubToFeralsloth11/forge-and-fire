@@ -21,6 +21,9 @@ var env: Environment
 var sun: DirectionalLight3D
 
 
+var we: WorldEnvironment
+
+
 func _ready() -> void:
 	bal = Bal.new()
 	bal.name = "Ballistics"
@@ -53,6 +56,8 @@ func _env() -> void:
 	sky.sky_material = sm
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	env.ambient_light_sky_contribution = 0.55
+	env.ambient_light_color = Color(0.62, 0.6, 0.56)
 	env.ambient_light_energy = 0.9
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
@@ -63,7 +68,7 @@ func _env() -> void:
 	env.glow_enabled = true
 	env.glow_intensity = 0.35
 	env.ssao_enabled = true
-	var we := WorldEnvironment.new()
+	we = WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	sun = DirectionalLight3D.new()
@@ -155,7 +160,7 @@ func _berm(pos: Vector3, size: Vector3, mat: Material) -> void:
 
 func _sign(text: String, pos: Vector3, size := 160, col := Color.WHITE) -> Label3D:
 	var l := Targets.label3d(text, size, col)
-	l.pixel_size = 0.01
+	l.pixel_size = 0.006
 	l.position = pos
 	add_child(l)
 	return l
@@ -166,11 +171,11 @@ func _firing_line() -> void:
 	_static_box(Vector3(34, 0.2, 7), Vector3(0, 0.0, 1.8), conc, "concrete")
 	var wood := Mats.get_mat("main", "Walnut")
 	var steel := Mats.prop(Color(0.25, 0.26, 0.27), 0.5, 0.6)
-	# Roof + posts.
-	_static_box(Vector3(34, 0.15, 7.5), Vector3(0, 3.2, 1.6), Mats.prop(Color(0.3, 0.32, 0.34), 0.7, 0.3), "steel")
-	for x in [-16.5, -8.0, 0.0, 8.0, 16.5]:
-		for z in [-1.8, 5.0]:
-			_static_box(Vector3(0.18, 3.1, 0.18), Vector3(x, 1.6, z), steel, "steel")
+	# Roof (set back so the sky stays visible) + posts between the benches.
+	_static_box(Vector3(34, 0.15, 5.2), Vector3(0, 3.4, 2.8), Mats.prop(Color(0.55, 0.56, 0.58), 0.7, 0.3), "steel")
+	for x in [-16.5, -6.0, 6.0, 16.5]:
+		for z in [0.4, 5.2]:
+			_static_box(Vector3(0.18, 3.3, 0.18), Vector3(x, 1.7, z), steel, "steel")
 	# Shooting benches with sandbags.
 	for i in 7:
 		var x := -12.0 + i * 4.0
@@ -178,7 +183,7 @@ func _firing_line() -> void:
 		for lx in [-0.65, 0.65]:
 			_static_box(Vector3(0.08, 0.8, 0.7), Vector3(x + lx, 0.45, 0.0), steel, "steel")
 		_static_box(Vector3(0.36, 0.12, 0.22), Vector3(x, 0.96, -0.2), Mats.prop(Color(0.6, 0.53, 0.38), 1.0), "wood")
-		_sign(str(i + 1), Vector3(x, 2.8, -1.8), 90, Color(1, 0.8, 0.3))
+		_sign(str(i + 1), Vector3(x, 3.1, 0.3), 40, Color(1, 0.8, 0.3))
 	# Prone mats in front of the benches.
 	for x in [-14.0, 14.0]:
 		var mat := MeshInstance3D.new()
@@ -188,7 +193,7 @@ func _firing_line() -> void:
 		mat.material_override = Mats.prop(Color(0.2, 0.25, 0.18), 1.0)
 		mat.position = Vector3(x, 0.115, 1.0)
 		add_child(mat)
-	_sign("FORGE & FIRE PROVING GROUND", Vector3(0, 3.7, -1.9), 120, Color(1, 0.6, 0.3))
+	_sign("FORGE & FIRE PROVING GROUND", Vector3(0, 3.75, 0.25), 70, Color(1, 0.6, 0.3))
 
 
 func _long_range() -> void:
@@ -209,7 +214,7 @@ func _long_range() -> void:
 		hinge.add_child(st)
 		st.position = Vector3(0, -0.12 - sz * 0.6, 0)
 		st.set_meta("label", "%d m steel" % int(d))
-		_sign("%d m" % int(d), Vector3(x, frame_h + 0.4 + d * 0.0012, -d), 60 + int(d * 0.08), Color(1, 0.9, 0.4))
+		_sign("%d m" % int(d), Vector3(x, frame_h + 0.5 + d * 0.002, -d), 100 + int(d * 0.14), Color(1, 0.9, 0.4))
 	_sign("100", Vector3(-19, 0.8, -100), 80)
 
 

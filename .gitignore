@@ -1,3 +1,4 @@
 .godot/
 tools/out/*.log
 *.import
+tools/out/

@@ -93,11 +93,13 @@ func _simtest() -> void:
 	await _wait(0.8)
 	hits = 0
 	_aim_at(Vector3(-36 - 5 + 5 * 1.6, 1.3, -20))
+	await _wait(0.3)
+	var a0: int = main.player.weapon.ammo
 	main.player.weapon.set_trigger(true)
 	await _wait(0.05)
 	main.player.weapon.set_trigger(false)
 	await _wait(1.0)
-	print("armour/plate hit test hits=%d" % hits)
+	print("armour/plate hit test hits=%d ammo %d->%d busy=%s swap=%.2f cd=%.2f" % [hits, a0, main.player.weapon.ammo, main.player.weapon.busy(), main.player.weapon._swap_t, main.player.weapon.cooldown])
 	var gl := Designs.preset("Thumper")
 	main.player.weapon.equip(gl)
 	await _wait(0.8)

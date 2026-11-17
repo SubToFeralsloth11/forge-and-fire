@@ -53,6 +53,7 @@ func go_range() -> void:
 		hud.resume.connect(_set_paused.bind(false))
 		player.global_transform = range_world.spawn
 	workshop.visible = false
+	_use_env(range_world.we, workshop.we)
 	workshop.process_mode = Node.PROCESS_MODE_DISABLED
 	workshop.ui.visible = false
 	range_world.visible = true
@@ -75,6 +76,8 @@ func go_workshop() -> void:
 		range_world.process_mode = Node.PROCESS_MODE_DISABLED
 		hud_layer.visible = false
 	workshop.visible = true
+	if range_world:
+		_use_env(workshop.we, range_world.we)
 	workshop.process_mode = Node.PROCESS_MODE_INHERIT
 	workshop.ui.visible = true
 	workshop.cam.current = true
@@ -149,3 +152,12 @@ func _next_preset(d: int) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and mode == "range" and not paused:
 		_set_paused(true)
+
+
+## Only one WorldEnvironment may be active: park the other one's environment.
+func _use_env(on: WorldEnvironment, off: WorldEnvironment) -> void:
+	if off.environment:
+		off.set_meta("env", off.environment)
+		off.environment = null
+	if on.environment == null and on.has_meta("env"):
+		on.environment = on.get_meta("env")

@@ -9,6 +9,7 @@ var _casings: Array = []
 var _holes: Array = []
 var _mats := {}
 const MAX_HOLES := 400
+var _soft: GradientTexture2D
 const MAX_CASINGS := 60
 
 
@@ -25,6 +26,20 @@ func _mat(key: String, c: Color, unshaded := true, add := false) -> StandardMate
 	var m := StandardMaterial3D.new()
 	m.albedo_color = c
 	m.vertex_color_use_as_albedo = true
+	if _soft == null:
+		_soft = GradientTexture2D.new()
+		_soft.fill = GradientTexture2D.FILL_RADIAL
+		_soft.fill_from = Vector2(0.5, 0.5)
+		_soft.fill_to = Vector2(1.0, 0.5)
+		_soft.width = 64
+		_soft.height = 64
+		var g := Gradient.new()
+		g.set_color(0, Color(1, 1, 1, 1))
+		g.set_color(1, Color(1, 1, 1, 0))
+		g.add_point(0.45, Color(1, 1, 1, 0.55))
+		_soft.gradient = g
+	if key not in ["chip", "chip_c", "shard", "pulp", "paper"]:
+		m.albedo_texture = _soft
 	if unshaded:
 		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA

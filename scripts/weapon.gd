@@ -80,8 +80,8 @@ func _ready() -> void:
 	var sleeve := Mats.prop(Color(0.28, 0.3, 0.22), 0.95)
 	hand_r = _limb(_capsule(0.032, 0.11), glove)
 	hand_l = _limb(_capsule(0.032, 0.11), glove)
-	arm_r = _limb(_capsule(0.045, 0.5), sleeve)
-	arm_l = _limb(_capsule(0.045, 0.5), sleeve)
+	arm_r = _limb(_capsule(0.036, 0.5), sleeve)
+	arm_l = _limb(_capsule(0.036, 0.5), sleeve)
 	laser_dot = MeshInstance3D.new()
 	var sm := SphereMesh.new()
 	sm.radius = 0.004
@@ -743,8 +743,8 @@ func _update_hands() -> void:
 	_place(hand_r, G, G + Vector3(0.0, -0.08, 0.02), 0.0)
 	_place(hand_l, Sp, Sp + Vector3(-0.03, -0.07, 0.0), 0.0)
 	var pistol: bool = rcv.fam in ["pistol", "revolver"]
-	var sh_r := Vector3(0.2, -0.42, 0.18)
-	var sh_l := Vector3(-0.2, -0.42, 0.12) if not pistol else Vector3(-0.12, -0.44, 0.12)
+	var sh_r := Vector3(0.3, -0.62, 0.32)
+	var sh_l := Vector3(-0.3, -0.62, 0.26) if not pistol else Vector3(-0.16, -0.62, 0.3)
 	_place(arm_r, G + Vector3(0, -0.04, 0.03), sh_r, 1.0)
 	_place(arm_l, Sp + Vector3(0, -0.03, 0.02), sh_l, 1.0)
 	hand_l.visible = gun.visible
